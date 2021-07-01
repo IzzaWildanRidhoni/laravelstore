@@ -1,4 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.global')
+
+@section('title') Home @endsection
+
+@section('pageTitle')
+    <h2>Home</h2>
+@endsection
 
 @section('content')
 <div class="container">
