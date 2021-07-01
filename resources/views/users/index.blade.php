@@ -12,7 +12,33 @@
             {{session('status')}}
         </div>
     @endif
-   
+
+    {{-- filter email --}}
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ route('users.index') }}">
+                <div class="input-group mb-3">
+                    <input type="text" value="{{Request::get('keyword')}}" name="keyword" class="form-control col-md-10" placeholder="filter berdasarkan email">
+                    <div class="input-group-append">
+                        <input type="submit" value="filter" class="btn btn-primary">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col text-right">
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Create User</a>
+        </div>
+    </div>
+
+    {{-- 
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Create User</a>
+        </div>
+    </div> --}}
+
+    {{-- isi data user --}}
     <table class="table table-bordered">
         <thead>
             <tr>
