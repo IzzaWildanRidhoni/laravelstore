@@ -14,12 +14,28 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = \App\Models\User::paginate(10);
-
-        // buat filter saja jika ada
+        
+        // filter
         $filterKeyword = $request->get('keyword');
-        if ($filterKeyword) {
-            $users = \App\Models\User::where('email','LIKE',"%$filterKeyword%")->paginate(10);
+        $status = $request->get('status');
+        
+        // cek status
+        if ($status) {
+            $users = \App\Models\User::where('status',$status)->paginate(10);
+        }else{
+            $users = \App\Models\User::paginate(10);
         }
+        
+        // cek keyword
+        if ($filterKeyword) {
+            // cek status
+            if ($status) {
+                $users = \App\Models\User::where('email','LIKE',"%$filterKeyword%")->where('status',$status)->paginate(10);
+            }else{
+                $users = \App\Models\User::where('email','LIKE',"%$filterKeyword%")->paginate(10);
+            }
+        }
+        // akhir filter
 
         return view('users.index',['users'=>$users]);
     }

@@ -14,29 +14,31 @@
     @endif
 
     {{-- filter email --}}
-    <div class="row">
-        <div class="col-md-6">
-            <form action="{{ route('users.index') }}">
-                <div class="input-group mb-3">
-                    <input type="text" value="{{Request::get('keyword')}}" name="keyword" class="form-control col-md-10" placeholder="filter berdasarkan email">
-                    <div class="input-group-append">
-                        <input type="submit" value="filter" class="btn btn-primary">
-                    </div>
-                </div>
-            </form>
+    <form action="{{ route('users.index') }}">
+        <div class="row">
+            <div class="col-md-6">
+                {{-- filter email --}}
+                <input type="text" value="{{Request::get('keyword')}}" name="keyword" class="form-control" placeholder="filter berdasarkan email">
+            </div>
+            <div class="col-md-6">
+                {{-- filter status --}}
+                <input {{Request::get('status')=="ACTIVE" ? "checked" : ""}} name="status" class="form-control" value="ACTIVE" type="radio"  id="active">
+                <label for="active">Active</label>
+                <input {{Request::get('status')=="INACTIVE" ? "checked" : ""}} name="status" class="form-control" value="INACTIVE" type="radio"  id="inactive">
+                <label for="inactive">Inactive</label>
+                
+                <input type="submit" value="filter" class="btn btn-primary">
+            </div>
+                
         </div>
+    </form>
 
-        <div class="col text-right">
+    
+    <div class="row">
+        <div class="col-md-12 text-right my-3">
             <a href="{{ route('users.create') }}" class="btn btn-primary">Create User</a>
         </div>
     </div>
-
-    {{-- 
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <a href="{{ route('users.create') }}" class="btn btn-primary">Create User</a>
-        </div>
-    </div> --}}
 
     {{-- isi data user --}}
     <table class="table table-bordered">
@@ -46,6 +48,7 @@
                 <th><b>Username</b></th>
                 <th><b>Email</b></th>
                 <th><b>Avatar</b></th>
+                <th><b>Status</b></th>
                 <th><b>Action</b></th>
             </tr>
         </thead>
@@ -63,6 +66,17 @@
                         @endif
                     </td>
                     <td>
+                        @if ($user->status=="ACTIVE")
+                            <span class="badge badge-success">
+                                {{$user->status}}
+                            </span>
+                        @else
+                            <span class="badge badge-danger">
+                                {{$user->status}}
+                            </span>
+                        @endif
+                    </td>
+                    <td>
                         <a class="btn btn-info text-white btn-sm" href="{{route('users.edit',[$user->id])}}">Edit</a>
                         {{-- show --}}
                         <a href="{{ route('users.show', [$user->id]) }}" class="btn btn-primary btn-sm">Detail</a>
@@ -76,6 +90,14 @@
                 </tr>
             @endforeach
         </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="10">
+                    {{$users->appends(Request::all())->links()}}
+                </td>
+            </tr>
+        </tfoot>
     </table>
 
 @endsection
