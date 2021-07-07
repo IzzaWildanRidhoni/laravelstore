@@ -10,4 +10,9 @@ class Category extends Model
 {
     use HasFactory;
     use SoftDeletes;//untuk menggunakan soft delete
+
+    public function books()
+    {
+        return $this->belongsToMany('App\Models\Book');
+    }
 }
